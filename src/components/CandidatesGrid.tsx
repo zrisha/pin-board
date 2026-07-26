@@ -33,18 +33,20 @@ const Candidate = ({ candidate, index }: CandidateProps) => {
 };
 
 export function CandidatesGrid({ rime }: CandidatesGridProps) {
+  const candidates = rime.composing ? rime.candidates : Array(4).fill('&nbsp;');
   return (
     <>
-      {rime.composing && rime.candidates.length > 0 && (
-        <Row
-          gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-          style={{ width: '100%' }}
-        >
-          {rime.candidates.map((candidate, index) => (
-            <Candidate candidate={candidate} index={index} />
-          ))}
-        </Row>
-      )}
+      <Row
+        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+        style={{
+          width: '100%',
+          visibility: rime.composing ? 'unset' : 'hidden',
+        }}
+      >
+        {candidates.map((candidate, index) => (
+          <Candidate candidate={candidate} index={index} />
+        ))}
+      </Row>
     </>
   );
 }

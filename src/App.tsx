@@ -8,7 +8,7 @@ import { CandidatesGrid } from './components/CandidatesGrid';
 const { Header, Content, Footer } = Layout;
 
 export function App() {
-  const rime: UseRime = useRime({ pageSize: 4 });
+  const rime: UseRime = useRime({ pageSize: 4, userDict: false });
   return (
     <Layout>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
