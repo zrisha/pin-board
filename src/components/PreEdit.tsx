@@ -1,5 +1,5 @@
 import { type UseRime } from 'react-rime';
-import { Alert } from 'antd';
+import { Alert, theme } from 'antd';
 import styles from './PreEdit.module.css';
 
 type PreEditProps = {
@@ -7,19 +7,26 @@ type PreEditProps = {
 };
 
 export function PreEdit({ rime }: PreEditProps) {
+  const { token } = theme.useToken();
+  const preedit: UseRime['preedit'] = rime.composing
+    ? rime.preedit
+    : { head: ' ', tail: '', body: '' };
   const component = (
     <>
-      {rime.composing && (
-        <div className={styles.preedit} data-testid="preedit">
-          {rime.preedit.head}
-          <span className={styles.cursor}>{rime.preedit.body}</span>
-          {rime.preedit.tail}
-        </div>
-      )}
+      <div
+        className={styles.preedit}
+        style={{ height: token.fontSize * token.lineHeight * 2 }}
+        data-testid="preedit"
+      >
+        {preedit.head}
+        <span className={styles.cursor}>{preedit.body}</span>
+        {preedit.tail}
+      </div>
     </>
   );
   return (
     <Alert
+      className={styles.preeditBox}
       style={{ width: '100%' }}
       description={component}
       type="info"

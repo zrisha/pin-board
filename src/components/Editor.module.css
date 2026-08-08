@@ -1,0 +1,23 @@
+.editorTextArea.editorTextArea {
+  height: 120px;
+  resize: none;
+}
+
+.pinyinWrapper {
+  position: relative;
+}
+
+.pinyinCard {
+  height: 120px;
+  overflow-y: auto;
+}
+
+.pinyinText {
+  white-space: pre-line;
+}
+
+.pinyinCopyButton {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+}

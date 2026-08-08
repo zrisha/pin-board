@@ -1,9 +1,9 @@
-import { Layout, Flex } from 'antd';
-import { AntEditor } from './components/AntEditor';
+import { Layout, Flex, Spin } from 'antd';
+import { Editor } from './components/Editor';
 import { useRime, type UseRime } from 'react-rime';
 import { PreEdit } from './components/PreEdit';
-import { Candidates } from './components/Candidates';
 import { CandidatesGrid } from './components/CandidatesGrid';
+import styles from './App.module.css';
 
 const { Header, Content, Footer } = Layout;
 
@@ -15,17 +15,20 @@ export function App() {
         <h1 style={{ color: 'white' }}>Pin-Board</h1>
       </Header>
       <Content>
-        <Flex
-          vertical
-          align="center"
-          justify="center"
-          gap="medium"
-          style={{ padding: '2% 20%' }}
-        >
-          <PreEdit rime={rime} />
-          <CandidatesGrid rime={rime} />
-          <AntEditor rime={rime} />
-        </Flex>
+        <Spin spinning={rime.loading}>
+          <Flex
+            vertical
+            align="center"
+            justify="center"
+            gap="medium"
+            className={styles.appContent}
+          >
+            <PreEdit rime={rime} />
+            <CandidatesGrid rime={rime} />
+
+            <Editor rime={rime} />
+          </Flex>
+        </Spin>
       </Content>
       <Footer>Foots</Footer>
     </Layout>
