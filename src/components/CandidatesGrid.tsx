@@ -1,7 +1,8 @@
 // TODO: ant design Grid, preferable with wrapping breakpoints
 import { type RimeCandidate, type UseRime } from 'react-rime';
-import { Card, Col, Typography, Row, Space, theme } from 'antd';
+import { Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
 import { pinyin } from 'pinyin-pro';
+import { useModernDict } from '../hooks/pinyin';
 
 const { Text } = Typography;
 
@@ -13,9 +14,15 @@ type CandidateProps = {
   candidate: RimeCandidate;
   index: number;
   onClick: () => void;
+  pinyinReady: boolean;
 };
 
-const Candidate = ({ candidate, index, onClick }: CandidateProps) => {
+const Candidate = ({
+  candidate,
+  index,
+  onClick,
+  pinyinReady,
+}: CandidateProps) => {
   const { token } = theme.useToken();
   return (
     <Col xs={12}>
@@ -30,7 +37,11 @@ const Candidate = ({ candidate, index, onClick }: CandidateProps) => {
           {/* Reserve two lines so card heights stay stable as candidates
               change per keystroke. */}
           <div style={{ minHeight: token.fontSize * token.lineHeight * 2 }}>
-            <Text type="secondary">{pinyin(candidate.text)}</Text>
+            {pinyinReady ? (
+              <Text type="secondary">{pinyin(candidate.text)}</Text>
+            ) : (
+              <Spin size="small" />
+            )}
           </div>
         </Space>
       </Card>
@@ -39,6 +50,7 @@ const Candidate = ({ candidate, index, onClick }: CandidateProps) => {
 };
 
 export function CandidatesGrid({ rime }: CandidatesGridProps) {
+  const pinyinReady = useModernDict();
   return (
     // Fixed-height region so the editor below never moves; an oversized
     // candidate page scrolls here instead of pushing the layout.
@@ -63,6 +75,7 @@ export function CandidatesGrid({ rime }: CandidatesGridProps) {
               candidate={candidate}
               index={index}
               onClick={() => void rime.selectCandidate(index)}
+              pinyinReady={pinyinReady}
             />
           ))}
         </Row>

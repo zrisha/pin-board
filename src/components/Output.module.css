@@ -1,0 +1,13 @@
+.outputWrapper {
+  position: relative;
+}
+
+.textOutputText {
+  white-space: pre-line;
+}
+
+.textCopyButton {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+}
