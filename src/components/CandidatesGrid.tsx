@@ -1,8 +1,10 @@
 // TODO: ant design Grid, preferable with wrapping breakpoints
 import { type RimeCandidate, type UseRime } from 'react-rime';
-import { Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
+import { Button, Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { pinyin } from 'pinyin-pro';
 import { useModernDict } from '../hooks/pinyin';
+import styles from './CandidatesGrid.module.css';
 
 const { Text } = Typography;
 
@@ -26,11 +28,16 @@ const Candidate = ({
   const { token } = theme.useToken();
   return (
     <Col xs={12}>
-      <Card size="small" hoverable style={{ height: '100%' }} onClick={onClick}>
-        <Space vertical size={3} style={{ width: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-            <Text style={{ flex: 1, minWidth: 0 }}>{candidate.text}</Text>
-            <Text type="secondary" style={{ flexShrink: 0 }}>
+      <Card
+        size="small"
+        hoverable
+        className={styles.fullHeight}
+        onClick={onClick}
+      >
+        <Space vertical size={3} className={styles.fullWidth}>
+          <div className={styles.candidateWrapper}>
+            <Text className={styles.candidateText}>{candidate.text}</Text>
+            <Text type="secondary" className={styles.noShrink}>
               {index + 1}
             </Text>
           </div>
@@ -54,31 +61,45 @@ export function CandidatesGrid({ rime }: CandidatesGridProps) {
   return (
     // Fixed-height region so the editor below never moves; an oversized
     // candidate page scrolls here instead of pushing the layout.
-    <div
-      style={{
-        height: 220,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        width: '100%',
-      }}
-    >
+    <div className={styles.candidatesGrid}>
       {rime.composing && (
-        <Row
-          gutter={[
-            { xs: 8, sm: 16, md: 20 },
-            { xs: 8, sm: 16, md: 20 },
-          ]}
-        >
-          {rime.candidates.map((candidate, index) => (
-            <Candidate
-              key={index}
-              candidate={candidate}
-              index={index}
-              onClick={() => void rime.selectCandidate(index)}
-              pinyinReady={pinyinReady}
+        <>
+          <div className={styles.paginationArrow}>
+            <Button
+              onClick={() => rime.changePage(true)}
+              disabled={rime.page == 0}
+              shape="circle"
+              size="small"
+              icon={<LeftOutlined />}
             />
-          ))}
-        </Row>
+          </div>
+          <Row
+            className={styles.candidatesRow}
+            gutter={[
+              { xs: 8, sm: 16, md: 20 },
+              { xs: 8, sm: 16, md: 20 },
+            ]}
+          >
+            {rime.candidates.map((candidate, index) => (
+              <Candidate
+                key={index}
+                candidate={candidate}
+                index={index}
+                onClick={() => void rime.selectCandidate(index)}
+                pinyinReady={pinyinReady}
+              />
+            ))}
+          </Row>
+          <div className={styles.paginationArrow}>
+            <Button
+              onClick={() => rime.changePage(false)}
+              disabled={rime.isLastPage}
+              shape="circle"
+              size="small"
+              icon={<RightOutlined />}
+            />
+          </div>
+        </>
       )}
     </div>
   );

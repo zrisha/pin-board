@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Input, theme } from 'antd';
+import { Input, theme } from 'antd';
 import { type UseRime } from 'react-rime';
 import { Output } from './Output';
 import styles from './Editor.module.css';
@@ -25,7 +25,7 @@ export function Editor({ rime }: EditorProps) {
   } = rime.getInputProps({ onChange });
 
   return (
-    <Flex vertical gap={32} style={{ width: '100%' }}>
+    <>
       <TextArea
         ref={(node) => rimeRef(node?.resizableTextArea?.textArea ?? null)}
         value={value}
@@ -37,6 +37,6 @@ export function Editor({ rime }: EditorProps) {
         }}
       />
       <Output editorValue={value} />
-    </Flex>
+    </>
   );
 }

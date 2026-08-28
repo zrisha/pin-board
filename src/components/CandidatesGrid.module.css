@@ -1,0 +1,40 @@
+.paginationArrow {
+  flex: 0 0 34px;
+  display: flex;
+  justify-content: center;
+}
+
+.candidatesGrid {
+  height: 220px;
+  overflow-y: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.candidateWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.candidateText {
+  flex: 1;
+  min-width: 0;
+}
+
+.candidatesRow {
+  flex: 1 1 90%;
+}
+
+.fullHeight {
+  height: 100%;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.noShrink {
+  flex-shrink: 0;
+}

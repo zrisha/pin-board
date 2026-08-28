@@ -1,5 +1,6 @@
 .outputWrapper {
   position: relative;
+  width: 100%;
 }
 
 .textOutputText {
