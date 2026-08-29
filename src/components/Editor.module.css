@@ -1,4 +1,5 @@
 .editorTextArea.editorTextArea {
   height: 120px;
   resize: none;
+  font-size: 1.3em;
 }

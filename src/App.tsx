@@ -12,7 +12,7 @@ export function App() {
   return (
     <Layout>
       <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <h1 style={{ color: 'white' }}>Pin-Board</h1>
+        <h2 style={{ color: 'white' }}>Pin-Board</h2>
       </Header>
       <Content>
         <Spin spinning={rime.loading}>

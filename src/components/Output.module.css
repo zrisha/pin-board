@@ -5,6 +5,15 @@
 
 .textOutputText {
   white-space: pre-line;
+  font-size: 1.3em;
+  line-height: 2;
+}
+
+.lookupText {
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+  padding: 0 2px;
 }
 
 .textCopyButton {

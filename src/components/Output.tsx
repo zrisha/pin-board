@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Card, Typography, theme, Spin } from 'antd';
+import { Card, Typography, theme, Spin, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import { pinyin } from 'pinyin-pro';
-import { useModernDict } from '../hooks/pinyin';
+import { lookupChar, useModernDict } from '../hooks/pinyin';
 import styles from './Output.module.css';
 
 const { Text } = Typography;
@@ -16,6 +16,24 @@ const tabList = [
   { key: 'definition', label: 'Definition' },
 ];
 
+function OutputTooltip({
+  text,
+  tooltip,
+  key,
+}: {
+  text: string;
+  tooltip: string | undefined;
+  key: React.Key;
+}) {
+  return tooltip ? (
+    <Tooltip key={key} title={tooltip} trigger={['hover', 'click']}>
+      <span className={styles.lookupText}>{text}</span>
+    </Tooltip>
+  ) : (
+    <span key={key}>{text}</span>
+  );
+}
+
 function PinyinTab({
   editorValue,
   onStateChange,
@@ -24,13 +42,42 @@ function PinyinTab({
   onStateChange: (state: TabState) => void;
 }) {
   const pinyinReady = useModernDict();
-  const pinyinText = pinyinReady ? pinyin(editorValue) : '';
+  const chars = editorValue ? Array.from(editorValue) : [];
+  const pinyinArray = pinyinReady ? pinyin(editorValue, { type: 'array' }) : [];
+  const pinyinText = pinyinArray.join(' ');
 
   useEffect(() => {
     onStateChange({ text: pinyinText, loading: !pinyinReady });
   }, [pinyinText, pinyinReady, onStateChange]);
 
-  return <>{pinyinText}</>;
+  return (
+    <>
+      {chars.map((char, index) => (
+        <OutputTooltip key={index} text={pinyinArray[index]} tooltip={char} />
+      ))}
+    </>
+  );
+}
+
+function HanyuTab({
+  editorValue,
+  onStateChange,
+}: {
+  editorValue: string;
+  onStateChange: (state: TabState) => void;
+}) {
+  useEffect(() => {
+    onStateChange({ text: editorValue, loading: false });
+  }, [editorValue, onStateChange]);
+
+  return (
+    <>
+      {Array.from(editorValue).map((char, i) => {
+        const def = lookupChar(char)?.slice(0, 3).join(' | ');
+        return <OutputTooltip key={i} text={char} tooltip={def} />;
+      })}
+    </>
+  );
 }
 
 export function Output({ editorValue }: { editorValue: string }) {
@@ -63,7 +110,9 @@ export function Output({ editorValue }: { editorValue: string }) {
                 onStateChange={setTabState}
               />
             )}
-            {activeTab === 'hanyu' && <span>hanyu</span>}
+            {activeTab === 'hanyu' && (
+              <HanyuTab editorValue={editorValue} onStateChange={setTabState} />
+            )}
             {activeTab === 'definition' && <span>definition</span>}
           </Text>
         </Card>
