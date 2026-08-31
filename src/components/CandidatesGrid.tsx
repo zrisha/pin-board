@@ -3,7 +3,7 @@ import { type RimeCandidate, type UseRime } from 'react-rime';
 import { Button, Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { pinyin } from 'pinyin-pro';
-import { useModernDict } from '../hooks/pinyin';
+import { useCompleteDict } from '../hooks/pinyin';
 import styles from './CandidatesGrid.module.css';
 
 const { Text } = Typography;
@@ -57,7 +57,7 @@ const Candidate = ({
 };
 
 export function CandidatesGrid({ rime }: CandidatesGridProps) {
-  const pinyinReady = useModernDict();
+  const pinyinReady = useCompleteDict();
   return (
     // Fixed-height region so the editor below never moves; an oversized
     // candidate page scrolls here instead of pushing the layout.

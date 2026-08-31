@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, Typography, theme, Spin, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import { pinyin } from 'pinyin-pro';
-import { lookupChar, useModernDict } from '../hooks/pinyin';
+import { lookupChar, useCompleteDict } from '../hooks/pinyin';
 import styles from './Output.module.css';
 
 const { Text } = Typography;
@@ -41,7 +41,7 @@ function PinyinTab({
   editorValue: string;
   onStateChange: (state: TabState) => void;
 }) {
-  const pinyinReady = useModernDict();
+  const pinyinReady = useCompleteDict();
   const chars = editorValue ? Array.from(editorValue) : [];
   const pinyinArray = pinyinReady ? pinyin(editorValue, { type: 'array' }) : [];
   const pinyinText = pinyinArray.join(' ');

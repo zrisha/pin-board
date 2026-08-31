@@ -1,19 +1,31 @@
-// Registers @pinyin-pro/data's `modern` dict, which makes pinyin-pro's
+// Registers @pinyin-pro/data's `complete` dict, which makes pinyin-pro's
 // segment() produce real word boundaries and pinyin() correct on polyphonic
-// words — its built-in dict only covers pinyin-irregular phrases.
+// words — its built-in dict only covers pinyin-irregular phrases. (`complete`
+// over `modern`: modern lacks most proper nouns — 中国, 北京 — so common
+// phrases like 中国人 mis-segment.)
 import { addDict } from 'pinyin-pro';
 import { useEffect, useState } from 'react';
 import charDict from '../resources/charDict.json';
 
-let modernDictPromise: Promise<void> | undefined;
+let completeDictPromise: Promise<void> | undefined;
 
-export function useModernDict(): boolean {
+export function useCompleteDict(): boolean {
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    modernDictPromise ??= import('@pinyin-pro/data/modern').then((modern) => {
-      addDict(modern.default, { name: 'modern' });
-    });
-    modernDictPromise.then(() => setReady(true));
+    completeDictPromise ??= import('@pinyin-pro/data/complete').then(
+      (complete) =>
+        new Promise<void>((resolve) => {
+          const register = () => {
+            addDict(complete.default, { name: 'complete' });
+            resolve();
+          };
+          // addDict blocks the main thread ~300ms building its trie — run it
+          // in an idle gap rather than whenever the download happens to land.
+          if ('requestIdleCallback' in window) requestIdleCallback(register, { timeout: 5000 });
+          else setTimeout(register, 0);
+        }),
+    );
+    completeDictPromise.then(() => setReady(true));
   }, []);
   return ready;
 }
