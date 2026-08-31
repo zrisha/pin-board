@@ -10,9 +10,11 @@ const { Header, Content, Footer } = Layout;
 export function App() {
   const rime: UseRime = useRime({ pageSize: 4, userDict: false });
   return (
-    <Layout>
-      <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <h2 style={{ color: 'white' }}>Pin-Board</h2>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Header className={styles.appHeader}>
+        <div className={styles.appHeaderContent}>
+          <h2 style={{ color: 'white' }}>Pin-Board</h2>
+        </div>
       </Header>
       <Content>
         <Spin spinning={rime.loading}>
@@ -30,7 +32,7 @@ export function App() {
           </Flex>
         </Spin>
       </Content>
-      <Footer>Foots</Footer>
+      <Footer></Footer>
     </Layout>
   );
 }

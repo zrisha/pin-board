@@ -56,6 +56,7 @@ export function lookupWord(
   word: string,
   wordDict: Record<string, string[]> | undefined,
 ): string[] | undefined {
-  if ([...word].length === 1) return lookupChar(word);
-  return wordDict?.[word];
+  const chars = [...word];
+  if (chars.length === 1) return lookupChar(word);
+  return wordDict?.[word] ?? chars.flatMap((c) => lookupChar(c) ?? []);
 }

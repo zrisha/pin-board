@@ -3,3 +3,15 @@
   margin: 0 auto;
   padding: 16px 12px;
 }
+
+.appHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appHeaderContent {
+  max-width: 720px;
+  width: 100%;
+  padding: 16px 12px;
+}

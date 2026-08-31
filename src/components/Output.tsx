@@ -1,19 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Card, Typography, theme, Spin, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
-import { pinyin } from 'pinyin-pro';
-import { lookupChar, useCompleteDict } from '../hooks/pinyin';
+import { pinyin, segment } from 'pinyin-pro';
+import {
+  lookupChar,
+  useCompleteDict,
+  useWordDict,
+  lookupWord,
+} from '../hooks/pinyin';
 import styles from './Output.module.css';
 
 const { Text } = Typography;
 
 type TabState = { text: string; loading: boolean };
-type TabKey = 'pinyin' | 'hanyu' | 'definition';
+type TabKey = 'pinyin' | 'word' | 'char';
 
 const tabList = [
   { key: 'pinyin', label: 'Pinyin' },
-  { key: 'hanyu', label: 'Hanyu' },
-  { key: 'definition', label: 'Definition' },
+  { key: 'word', label: 'Word' },
+  { key: 'char', label: 'Char' },
 ];
 
 function OutputTooltip({
@@ -41,25 +46,29 @@ function PinyinTab({
   editorValue: string;
   onStateChange: (state: TabState) => void;
 }) {
-  const pinyinReady = useCompleteDict();
+  useCompleteDict();
   const chars = editorValue ? Array.from(editorValue) : [];
-  const pinyinArray = pinyinReady ? pinyin(editorValue, { type: 'array' }) : [];
+  const pinyinArray = pinyin(editorValue, { type: 'array' });
   const pinyinText = pinyinArray.join(' ');
 
   useEffect(() => {
-    onStateChange({ text: pinyinText, loading: !pinyinReady });
-  }, [pinyinText, pinyinReady, onStateChange]);
+    onStateChange({ text: pinyinText, loading: false });
+  }, [pinyinText, onStateChange]);
 
   return (
     <>
       {chars.map((char, index) => (
-        <OutputTooltip key={index} text={pinyinArray[index]} tooltip={char} />
+        <OutputTooltip
+          key={index}
+          text={pinyinArray[index]}
+          tooltip={pinyinArray[index] !== char ? char : undefined}
+        />
       ))}
     </>
   );
 }
 
-function HanyuTab({
+function CharTab({
   editorValue,
   onStateChange,
 }: {
@@ -76,6 +85,34 @@ function HanyuTab({
         const def = lookupChar(char)?.slice(0, 3).join(' | ');
         return <OutputTooltip key={i} text={char} tooltip={def} />;
       })}
+    </>
+  );
+}
+
+function WordTab({
+  editorValue,
+  onStateChange,
+}: {
+  editorValue: string;
+  onStateChange: (state: TabState) => void;
+}) {
+  const wordDict = useWordDict();
+  const segmentReady = useCompleteDict();
+
+  useEffect(() => {
+    onStateChange({ text: editorValue, loading: !wordDict || !segmentReady });
+  }, [editorValue, wordDict, segmentReady, onStateChange]);
+
+  const segmented = editorValue ? segment(editorValue) : [];
+  return (
+    <>
+      {segmented.map((word, i) => (
+        <OutputTooltip
+          key={i}
+          text={word.origin}
+          tooltip={lookupWord(word.origin, wordDict)?.slice(0, 2).join(' | ')}
+        />
+      ))}
     </>
   );
 }
@@ -110,10 +147,12 @@ export function Output({ editorValue }: { editorValue: string }) {
                 onStateChange={setTabState}
               />
             )}
-            {activeTab === 'hanyu' && (
-              <HanyuTab editorValue={editorValue} onStateChange={setTabState} />
+            {activeTab === 'word' && (
+              <WordTab editorValue={editorValue} onStateChange={setTabState} />
             )}
-            {activeTab === 'definition' && <span>definition</span>}
+            {activeTab === 'char' && (
+              <CharTab editorValue={editorValue} onStateChange={setTabState} />
+            )}
           </Text>
         </Card>
       </Spin>
