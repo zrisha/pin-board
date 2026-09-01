@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, Typography, theme, Spin, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import { pinyin, segment } from 'pinyin-pro';
@@ -24,18 +24,16 @@ const tabList = [
 function OutputTooltip({
   text,
   tooltip,
-  key,
 }: {
   text: string;
   tooltip: string | undefined;
-  key: React.Key;
 }) {
   return tooltip ? (
-    <Tooltip key={key} title={tooltip} trigger={['hover', 'click']}>
+    <Tooltip title={tooltip} trigger={['hover', 'click']}>
       <span className={styles.lookupText}>{text}</span>
     </Tooltip>
   ) : (
-    <span key={key}>{text}</span>
+    <span>{text}</span>
   );
 }
 
@@ -48,7 +46,10 @@ function PinyinTab({
 }) {
   useCompleteDict();
   const chars = editorValue ? Array.from(editorValue) : [];
-  const pinyinArray = pinyin(editorValue, { type: 'array' });
+  const pinyinArray = useMemo(
+    () => pinyin(editorValue, { type: 'array' }),
+    [editorValue],
+  );
   const pinyinText = pinyinArray.join(' ');
 
   useEffect(() => {
@@ -103,7 +104,10 @@ function WordTab({
     onStateChange({ text: editorValue, loading: !wordDict || !segmentReady });
   }, [editorValue, wordDict, segmentReady, onStateChange]);
 
-  const segmented = editorValue ? segment(editorValue) : [];
+  const segmented = useMemo(
+    () => (editorValue ? segment(editorValue) : []),
+    [editorValue],
+  );
   return (
     <>
       {segmented.map((word, i) => (

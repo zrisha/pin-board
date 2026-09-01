@@ -1,4 +1,5 @@
 // TODO: ant design Grid, preferable with wrapping breakpoints
+import { useMemo } from 'react';
 import { type RimeCandidate, type UseRime } from 'react-rime';
 import { Button, Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
@@ -26,6 +27,7 @@ const Candidate = ({
   pinyinReady,
 }: CandidateProps) => {
   const { token } = theme.useToken();
+  const pinyinText = useMemo(() => pinyin(candidate.text), [candidate.text]);
   return (
     <Col xs={12}>
       <Card
@@ -45,7 +47,7 @@ const Candidate = ({
               change per keystroke. */}
           <div style={{ minHeight: token.fontSize * token.lineHeight * 2 }}>
             {pinyinReady ? (
-              <Text type="secondary">{pinyin(candidate.text)}</Text>
+              <Text type="secondary">{pinyinText}</Text>
             ) : (
               <Spin size="small" />
             )}
