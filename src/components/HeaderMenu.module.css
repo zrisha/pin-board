@@ -1,0 +1,11 @@
+.menu {
+  line-height: 64px;
+  border-bottom: none;
+  max-width: 205px;
+  width: 50%;
+}
+
+.settings {
+  max-height: 60vh;
+  overflow-y: auto;
+}

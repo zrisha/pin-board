@@ -8,10 +8,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 12px;
 }
 
 .appHeaderContent {
   max-width: 720px;
   width: 100%;
   padding: 16px 12px;
+}
+
+.title {
+  color: white;
+  white-space: nowrap;
 }
