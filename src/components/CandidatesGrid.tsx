@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { type RimeCandidate, type UseRime } from 'react-rime';
+import { type RimeButtonProps, type RimeCandidate, type UseRime } from 'react-rime';
 import { Button, Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { pinyin } from 'pinyin-pro';
@@ -12,18 +12,17 @@ type CandidatesGridProps = {
   rime: UseRime;
 };
 
-type CandidateProps = {
+type CandidateProps = RimeButtonProps & {
   candidate: RimeCandidate;
   index: number;
-  onClick: () => void;
   pinyinReady: boolean;
 };
 
 const Candidate = ({
   candidate,
   index,
-  onClick,
   pinyinReady,
+  ...buttonProps
 }: CandidateProps) => {
   const { token } = theme.useToken();
   const pinyinText = useMemo(() => pinyin(candidate.text), [candidate.text]);
@@ -33,7 +32,7 @@ const Candidate = ({
         size="small"
         hoverable
         className={styles.fullHeight}
-        onClick={onClick}
+        {...buttonProps}
       >
         <Space vertical size={3} className={styles.fullWidth}>
           <div className={styles.candidateWrapper}>

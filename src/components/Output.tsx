@@ -44,11 +44,12 @@ function PinyinTab({
   editorValue: string;
   onStateChange: (state: TabState) => void;
 }) {
-  useCompleteDict();
+  const pinyinReady = useCompleteDict();
   const chars = editorValue ? Array.from(editorValue) : [];
   const pinyinArray = useMemo(
     () => pinyin(editorValue, { type: 'array' }),
-    [editorValue],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [editorValue, pinyinReady],
   );
   const pinyinText = pinyinArray.join(' ');
 
@@ -106,7 +107,7 @@ function WordTab({
 
   const segmented = useMemo(
     () => (editorValue ? segment(editorValue) : []),
-    [editorValue],
+    [editorValue, segmentReady],
   );
   return (
     <>
