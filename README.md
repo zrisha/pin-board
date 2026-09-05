@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# Pin-Board
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A learning tool and typing aid for non-native Mandarin speakers who already read the Latin alphabet. It leans on that existing literacy, using pinyin to compose text so learners aren't blocked by not yet knowing characters. Pinyin isn't Chinese — but it lowers the barrier to entry and hopefully keeps pulling learners toward the characters underneath it.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Pinyin input** — type pinyin (e.g. `nihao`) into the editor and pick characters from the candidate grid, powered by [RIME](https://github.com/rime/home)'s `luna_pinyin` schema via [react-rime](https://github.com/zrisha/react-rime).
+- **Output tabs** — the composed text is shown three ways:
+  - **Pinyin** — per-character reading, tap/hover a character for the underlying hanzi.
+  - **Word** — text segmented into words, with a gloss per word.
+  - **Char** — per-character definitions.
+- **Settings** — toggle English punctuation and emoji suggestions.
 
-## React Compiler
+## Tech stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vite.dev/)
+- [antd](https://ant.design/) for UI components
+- [react-rime](https://github.com/zrisha/react-rime) for pinyin input method composition
+- [pinyin-pro](https://github.com/zh-lx/pinyin-pro) for pinyin conversion and word segmentation
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Available scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+| Script | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite dev server |
+| `npm run build` | Type-check and build for production |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Format with Prettier |
+| `npm run format:check` | Check formatting with Prettier |
+| `npm run parse:cedict` | Regenerate `src/resources/charDict.json` and `src/resources/wordDict.json` from a local CC-CEDICT source file |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## Credits
+
+- Pinyin input schema data from [my_rime](https://github.com/LibreService/my_rime).
+- Character and word definitions derived from [CC-CEDICT](https://cc-cedict.org/), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+
+## License
+
+[AGPL-3.0](LICENSE)

@@ -3,6 +3,7 @@ import {
   SettingOutlined,
   InfoCircleOutlined,
   GithubOutlined,
+  LinkOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu, Modal, Flex, Switch, Button, Typography } from 'antd';
@@ -10,9 +11,22 @@ import type { UseRime } from 'react-rime';
 import styles from './HeaderMenu.module.css';
 
 const CREDITS = [
-  { name: 'RIME', href: 'https://github.com/rime/home' },
-  { name: 'pinyin-pro', href: 'https://github.com/zh-lx/pinyin-pro' },
-  { name: 'my_rime', href: 'https://github.com/LibreService/my_rime' },
+  { name: 'RIME', href: 'https://github.com/rime/home', icon: <GithubOutlined /> },
+  {
+    name: 'pinyin-pro',
+    href: 'https://github.com/zh-lx/pinyin-pro',
+    icon: <GithubOutlined />,
+  },
+  {
+    name: 'my_rime',
+    href: 'https://github.com/LibreService/my_rime',
+    icon: <GithubOutlined />,
+  },
+  {
+    name: 'CC-CEDICT (CC BY-SA 4.0)',
+    href: 'https://cc-cedict.org/',
+    icon: <LinkOutlined />,
+  },
 ];
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -80,7 +94,7 @@ export function HeaderMenu({ rime }: HeaderMenuProps) {
         <Typography.Text type="secondary">
           Pin-Board is powered by the following projects:
         </Typography.Text>
-        <Flex gap="middle" style={{ marginTop: 8 }}>
+        <Flex wrap="wrap" gap="middle" style={{ marginTop: 8 }}>
           {CREDITS.map((credit) => (
             <Typography.Link
               key={credit.name}
@@ -88,7 +102,7 @@ export function HeaderMenu({ rime }: HeaderMenuProps) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GithubOutlined /> {credit.name}
+              {credit.icon} {credit.name}
             </Typography.Link>
           ))}
         </Flex>
