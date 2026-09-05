@@ -1,4 +1,3 @@
-// TODO: ant design Grid, preferable with wrapping breakpoints
 import { useMemo } from 'react';
 import { type RimeCandidate, type UseRime } from 'react-rime';
 import { Button, Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
@@ -68,7 +67,7 @@ export function CandidatesGrid({ rime }: CandidatesGridProps) {
         <>
           <div className={styles.paginationArrow}>
             <Button
-              onClick={() => rime.changePage(true)}
+              {...rime.getPagingProps(true)}
               disabled={rime.page == 0}
               shape="circle"
               size="small"
@@ -87,14 +86,14 @@ export function CandidatesGrid({ rime }: CandidatesGridProps) {
                 key={index}
                 candidate={candidate}
                 index={index}
-                onClick={() => void rime.selectCandidate(index)}
+                {...rime.getCandidateProps(index)}
                 pinyinReady={pinyinReady}
               />
             ))}
           </Row>
           <div className={styles.paginationArrow}>
             <Button
-              onClick={() => rime.changePage(false)}
+              {...rime.getPagingProps(false)}
               disabled={rime.isLastPage}
               shape="circle"
               size="small"

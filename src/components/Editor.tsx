@@ -11,11 +11,7 @@ type EditorProps = {
 
 export function Editor({ rime }: EditorProps) {
   const { token } = theme.useToken();
-  const {
-    ref: rimeRef,
-    value,
-    ...rimeInputProps
-  } = rime.getInputProps();
+  const { ref: rimeRef, value, ...rimeInputProps } = rime.getInputProps();
 
   return (
     <>
@@ -23,7 +19,7 @@ export function Editor({ rime }: EditorProps) {
         ref={(node) => rimeRef(node?.resizableTextArea?.textArea ?? null)}
         value={value}
         {...rimeInputProps}
-        placeholder="disable resize"
+        placeholder="Type pinyin, e.g. nihao"
         classNames={{ textarea: styles.editorTextArea }}
         styles={{
           textarea: { padding: token.paddingSM },
