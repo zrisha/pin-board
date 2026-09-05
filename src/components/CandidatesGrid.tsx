@@ -32,6 +32,8 @@ const Candidate = ({
         size="small"
         hoverable
         className={styles.fullHeight}
+        tabIndex={-1}
+        role="button"
         {...buttonProps}
       >
         <Space vertical size={3} className={styles.fullWidth}>
