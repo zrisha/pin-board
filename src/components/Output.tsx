@@ -8,6 +8,7 @@ import {
   useWordDict,
   lookupWord,
 } from '../hooks/pinyin';
+import { useIsTouchDevice } from '../hooks/device';
 import styles from './Output.module.css';
 
 const { Text } = Typography;
@@ -28,9 +29,15 @@ function OutputTooltip({
   text: string;
   tooltip: string | undefined;
 }) {
+  const isTouch = useIsTouchDevice();
   return tooltip ? (
-    <Tooltip title={tooltip} trigger={['hover', 'click']}>
-      <span className={styles.lookupText}>{text}</span>
+    <Tooltip title={tooltip} trigger={isTouch ? ['click'] : ['hover']}>
+      <span
+        className={styles.lookupText}
+        onMouseDown={isTouch ? (e) => e.preventDefault() : undefined}
+      >
+        {text}
+      </span>
     </Tooltip>
   ) : (
     <span>{text}</span>
