@@ -12,6 +12,22 @@
   align-items: center;
 }
 
+@media (max-width: 599px) {
+  .candidatesGrid {
+    height: 152px;
+  }
+}
+
+.candidatePinyin {
+  min-height: 44px;
+}
+
+@media (max-width: 599px) {
+  .candidatePinyin {
+    min-height: 22px;
+  }
+}
+
 .candidateWrapper {
   display: flex;
   align-items: flex-start;

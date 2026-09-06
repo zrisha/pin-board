@@ -134,8 +134,9 @@ export function Output({ editorValue }: { editorValue: string }) {
     <div className={styles.outputWrapper}>
       <Spin spinning={tabState.loading}>
         <Card
+          classNames={{ body: styles.cardBody }}
           styles={{
-            body: { padding: token.paddingSM, height: 120, overflowY: 'auto' },
+            body: { padding: token.paddingSM },
           }}
           tabList={tabList}
           tabProps={{ size: 'medium' }}

@@ -3,3 +3,9 @@
   resize: none;
   font-size: 1.3em;
 }
+
+@media (max-width: 599px) {
+  .editorTextArea.editorTextArea {
+    height: 55px;
+  }
+}

@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
-import { type RimeButtonProps, type RimeCandidate, type UseRime } from 'react-rime';
-import { Button, Card, Col, Typography, Row, Space, theme, Spin } from 'antd';
+import {
+  type RimeButtonProps,
+  type RimeCandidate,
+  type UseRime,
+} from 'react-rime';
+import { Button, Card, Col, Typography, Row, Space, Spin } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { pinyin } from 'pinyin-pro';
 import { useCompleteDict } from '../hooks/pinyin';
@@ -24,7 +28,6 @@ const Candidate = ({
   pinyinReady,
   ...buttonProps
 }: CandidateProps) => {
-  const { token } = theme.useToken();
   const pinyinText = useMemo(() => pinyin(candidate.text), [candidate.text]);
   return (
     <Col xs={12}>
@@ -43,9 +46,7 @@ const Candidate = ({
               {index + 1}
             </Text>
           </div>
-          {/* Reserve two lines so card heights stay stable as candidates
-              change per keystroke. */}
-          <div style={{ minHeight: token.fontSize * token.lineHeight * 2 }}>
+          <div className={styles.candidatePinyin}>
             {pinyinReady ? (
               <Text type="secondary">{pinyinText}</Text>
             ) : (
@@ -78,8 +79,8 @@ export function CandidatesGrid({ rime }: CandidatesGridProps) {
           <Row
             className={styles.candidatesRow}
             gutter={[
-              { xs: 8, sm: 16, md: 20 },
-              { xs: 8, sm: 16, md: 20 },
+              { xs: 8, sm: 8, md: 20 },
+              { xs: 8, sm: 8, md: 20 },
             ]}
           >
             {rime.candidates.map((candidate, index) => (

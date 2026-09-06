@@ -4,6 +4,7 @@ import { useRime, type UseRime } from 'react-rime';
 import { PreEdit } from './components/PreEdit';
 import { CandidatesGrid } from './components/CandidatesGrid';
 import { HeaderMenu } from './components/HeaderMenu';
+import { Output } from './components/Output';
 import styles from './App.module.css';
 
 const { Header, Content, Footer } = Layout;
@@ -18,7 +19,7 @@ export function App() {
     <Layout style={{ minHeight: '100vh' }}>
       <Header className={styles.appHeader}>
         <div className={styles.appHeaderContent}>
-          <Flex align="center" gap="large" justify="space-between">
+          <Flex align="center" gap="medium" justify="space-between">
             <h2 className={styles.title}>Pin-Board</h2>
             <HeaderMenu rime={rime} />
           </Flex>
@@ -34,9 +35,9 @@ export function App() {
             className={styles.appContent}
           >
             <PreEdit rime={rime} />
-            <CandidatesGrid rime={rime} />
-
             <Editor rime={rime} />
+            <CandidatesGrid rime={rime} />
+            <Output editorValue={rime.text} />
           </Flex>
         </Spin>
       </Content>

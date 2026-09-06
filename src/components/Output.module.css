@@ -3,6 +3,11 @@
   width: 100%;
 }
 
+.cardBody {
+  height: 120px;
+  overflow-y: auto;
+}
+
 .textOutputText {
   white-space: pre-line;
   font-size: 1.3em;

@@ -1,6 +1,6 @@
 import { Input, theme } from 'antd';
 import { type UseRime } from 'react-rime';
-import { Output } from './Output';
+
 import styles from './Editor.module.css';
 
 const { TextArea } = Input;
@@ -25,7 +25,6 @@ export function Editor({ rime }: EditorProps) {
           textarea: { padding: token.paddingSM },
         }}
       />
-      <Output editorValue={value} />
     </>
   );
 }
