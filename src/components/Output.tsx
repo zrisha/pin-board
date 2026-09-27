@@ -174,6 +174,7 @@ export function Output({ editorValue }: { editorValue: string }) {
         copyable={{
           text: tabState.text,
           icon: <CopyOutlined style={{ fontSize: 18 }} />,
+          tooltips: false,
         }}
       />
     </div>
