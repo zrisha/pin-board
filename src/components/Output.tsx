@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Card, Typography, theme, Spin, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
-import { pinyin, segment } from 'pinyin-pro';
+import { pinyin } from 'pinyin-pro';
 import {
   lookupChar,
   useCompleteDict,
   useWordDict,
   lookupWord,
+  segmentWord,
 } from '../hooks/pinyin';
 import { useIsTouchDevice } from '../hooks/device';
 import styles from './Output.module.css';
@@ -113,16 +114,16 @@ function WordTab({
   }, [editorValue, wordDict, segmentReady, onStateChange]);
 
   const segmented = useMemo(
-    () => (editorValue ? segment(editorValue) : []),
-    [editorValue, segmentReady],
+    () => (editorValue && wordDict ? segmentWord(editorValue, wordDict) : []),
+    [editorValue, wordDict, segmentReady],
   );
   return (
     <>
       {segmented.map((word, i) => (
         <OutputTooltip
           key={i}
-          text={word.origin}
-          tooltip={lookupWord(word.origin, wordDict)?.slice(0, 2).join(' | ')}
+          text={word}
+          tooltip={lookupWord(word, wordDict)?.slice(0, 2).join(' | ')}
         />
       ))}
     </>

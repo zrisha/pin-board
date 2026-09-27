@@ -3,7 +3,7 @@
 // words — its built-in dict only covers pinyin-irregular phrases. (`complete`
 // over `modern`: modern lacks most proper nouns — 中国, 北京 — so common
 // phrases like 中国人 mis-segment.)
-import { addDict } from 'pinyin-pro';
+import { addDict, segment } from 'pinyin-pro';
 import { useEffect, useState } from 'react';
 import charDict from '../resources/charDict.json';
 
@@ -21,7 +21,8 @@ export function useCompleteDict(): boolean {
           };
           // addDict blocks the main thread ~300ms building its trie — run it
           // in an idle gap rather than whenever the download happens to land.
-          if ('requestIdleCallback' in window) requestIdleCallback(register, { timeout: 5000 });
+          if ('requestIdleCallback' in window)
+            requestIdleCallback(register, { timeout: 5000 });
           else setTimeout(register, 0);
         }),
     );
@@ -34,9 +35,13 @@ let wordDictPromise: Promise<Record<string, string[]>> | undefined;
 
 /** The word-definition map, once loaded; undefined until then. */
 export function useWordDict(): Record<string, string[]> | undefined {
-  const [dict, setDict] = useState<Record<string, string[]> | undefined>(undefined);
+  const [dict, setDict] = useState<Record<string, string[]> | undefined>(
+    undefined,
+  );
   useEffect(() => {
-    wordDictPromise ??= import('../resources/wordDict.json').then((words) => words.default);
+    wordDictPromise ??= import('../resources/wordDict.json').then(
+      (words) => words.default,
+    );
     wordDictPromise.then(setDict);
   }, []);
   return dict;
@@ -59,4 +64,14 @@ export function lookupWord(
   const chars = [...word];
   if (chars.length === 1) return lookupChar(word);
   return wordDict?.[word] ?? chars.flatMap((c) => lookupChar(c) ?? []);
+}
+
+export function segmentWord(
+  text: string,
+  wordDict: Record<string, string[]>,
+): string[] {
+  const segmented = segment(text);
+  return segmented
+    .map(({ origin }) => (wordDict[origin] ? origin : [...origin])) //split string
+    .flat();
 }
